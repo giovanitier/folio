@@ -26,3 +26,7 @@ jobs:
         run: npm run check
       - name: Run synthetic tests
         run: npm test
+      - name: Validate Worker bundle without deployment
+        run: npx --yes wrangler@4 deploy --dry-run --outdir /tmp/folio-worker-build
+        env:
+          WRANGLER_SEND_METRICS: 'false'
