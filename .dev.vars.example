@@ -1,0 +1,4 @@
+# Set a real project contact before making requests to SEC EDGAR.
+# This server-only value is sent to SEC, never to the browser.
+# Example format: Folio/0.2 contact@example.com
+SEC_USER_AGENT=""

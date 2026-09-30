@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Folio — Follow public investors</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Track public investor portfolios from SEC 13F filings." />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a href="#" class="brand" aria-label="Folio home">Folio<span>.</span></a>
+      <div class="source-pill"><span class="dot"></span> SEC 13F</div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">PUBLIC PORTFOLIO INTELLIGENCE</p>
+        <h1>Follow the money.<br><span>Skip the noise.</span></h1>
+        <p class="hero-copy">Track what notable investors report owning, what changed since last quarter, and where reported holdings overlap.</p>
+      </div>
+      <button class="refresh" id="refreshBtn" type="button">Refresh view</button>
+    </section>
+
+    <section class="status-card" id="statusCard" aria-live="polite">
+      <div class="spinner"></div>
+      <div><strong>Reading SEC filings</strong><span>Comparing the two latest 13F reports for each investor.</span></div>
+    </section>
+
+    <section id="dataNote" class="data-note" aria-live="polite" hidden></section>
+
+    <section class="metrics" id="metrics" hidden></section>
+
+    <nav class="tabs" aria-label="Sections" hidden id="tabs">
+      <button class="tab active" data-tab="feed" type="button">Activity</button>
+      <button class="tab" data-tab="investors" type="button">Investors</button>
+      <button class="tab" data-tab="consensus" type="button">Consensus</button>
+    </nav>
+
+    <section class="toolbar" id="toolbar" hidden>
+      <label class="search-wrap">
+        <span class="sr-only">Search</span>
+        <input id="search" type="search" placeholder="Search investor or company" autocomplete="off" />
+      </label>
+      <label class="following-toggle"><input type="checkbox" id="followingOnly" /> Following only</label>
+    </section>
+
+    <section id="view"></section>
+
+    <footer>
+      <p>Source: SEC EDGAR Form 13F-HR. Filings are delayed quarterly disclosures, not real-time trades. Profiles refer to manager filings, not personal accounts. Reported values are in USD (not live prices or total assets under management). Share changes are not split-adjusted and do not prove purchases or sales. Amended reports are excluded until reconciled.</p>
+    </footer>
+  </main>
+
+  <dialog id="investorDialog">
+    <button class="dialog-close" id="closeDialog" type="button" aria-label="Close">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
