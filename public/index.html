@@ -1,65 +1,58 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light dark" />
-  <title>Folio — Follow public investors</title>
-  <meta name="robots" content="noindex,nofollow" />
-  <meta name="description" content="Track public investor portfolios from SEC 13F filings." />
-  <link rel="stylesheet" href="/styles.css" />
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Folio — Investor research</title>
+  <meta name="description" content="Explore reported holdings, quarterly changes, and overlap across SEC filing managers.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/syntari/app-shell.css">
+  <link rel="stylesheet" href="/vendor/syntari/controls.css">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
 </head>
-<body>
-  <main class="shell">
-    <header class="topbar">
-      <a href="#" class="brand" aria-label="Folio home">Folio<span>.</span></a>
-      <div class="source-pill"><span class="dot"></span> SEC 13F</div>
+<body class="folio-app">
+<a href="#content" class="skip">Skip to research</a>
+<div class="syntari-shell" id="shell">
+  <aside class="syntari-nav-panel" id="navigation" aria-label="Research navigation">
+    <header class="syntari-nav-header"><a href="#overview" class="syntari-workspace" aria-label="Folio overview"><span class="folio-mark" aria-hidden="true">f</span><strong>Folio</strong><span class="edition">V1</span></a><button type="button" class="syntari-icon-button syntari-nav-close" id="close-menu" aria-label="Close navigation">×</button></header>
+    <div class="syntari-nav-groups">
+      <nav class="syntari-nav-group" aria-label="Views">
+        <h2>Workspace</h2>
+        <a class="syntari-nav-item" href="#overview" data-view="overview"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M9 10h12"/></svg></span><span>Overview</span></a>
+        <a class="syntari-nav-item" href="#investors" data-view="investors"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><path d="M5 21v-2a7 7 0 0 1 14 0v2M5 3a9 9 0 0 0-2 11M19 3a9 9 0 0 1 2 11"/></svg></span><span>Investors</span><span class="nav-count" id="directory-count">—</span></a>
+        <a class="syntari-nav-item" href="#holdings" data-view="holdings"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span>Holdings</span></a>
+        <a class="syntari-nav-item" href="#overlap" data-view="overlap"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18M12 3v18"/></svg></span><span>Overlap</span></a>
+      </nav>
+      <section class="syntari-nav-group"><h2>Following <span id="follow-count">0</span></h2><div id="followed-nav" class="followed-nav"><p class="sidebar-hint">Follow a manager to keep their reports close.</p></div></section>
+    </div>
+    <div class="syntari-nav-footer">
+      <a class="syntari-nav-item" href="#sources" data-view="sources"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M21 3 11 13M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></svg></span><span>Data & sources</span></a>
+      <a class="syntari-nav-item" href="https://github.com/giovanitier/folio" target="_blank" rel="noopener noreferrer"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-16-2 20"/></svg></span><span>Source code</span><span class="external">↗</span></a>
+      <p class="sidebar-caption">Public filings. Independent decisions.</p>
+    </div>
+  </aside>
+  <div class="syntari-shell-body">
+    <header class="syntari-context-bar">
+      <button type="button" id="open-menu" class="syntari-icon-button syntari-nav-open" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation">☰</button>
+      <div class="breadcrumb"><span>Research</span><span aria-hidden="true">/</span><strong id="breadcrumb">Overview</strong></div>
+      <div class="top-actions"><span class="connection" id="connection"><i></i>Checking connection</span><button type="button" id="theme" class="syntari-icon-button" aria-label="Switch to dark theme" title="Switch theme">◐</button></div>
     </header>
-
-    <section class="hero">
-      <div>
-        <p class="eyebrow">PUBLIC PORTFOLIO INTELLIGENCE</p>
-        <h1>Follow the money.<br><span>Skip the noise.</span></h1>
-        <p class="hero-copy">Track what notable investors report owning, what changed since last quarter, and where reported holdings overlap.</p>
+    <main class="syntari-shell-content" id="content" tabindex="-1">
+      <header class="page-heading"><div><div class="eyebrow" id="eyebrow">SEC 13F · Manager disclosures</div><h1 id="page-title">Investor overview</h1><p id="page-description">Reported positions, quarter by quarter.</p></div><button type="button" id="refresh" class="button"><span aria-hidden="true">↻</span>Refresh</button></header>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div class="scope-bar" id="scope-bar">
+        <label class="field scope"><span>Manager</span><select id="manager"><option value="all">All available managers</option></select></label>
+        <label class="field period"><span>Report period</span><select id="period" disabled><option value="">Waiting for filings</option></select></label>
+        <label class="following-filter"><input type="checkbox" id="following-only">Following only</label>
+        <span id="coverage" class="coverage">No reports loaded</span>
       </div>
-      <button class="refresh" id="refreshBtn" type="button">Refresh view</button>
-    </section>
-
-    <section class="status-card" id="statusCard" aria-live="polite">
-      <div class="spinner"></div>
-      <div><strong>Reading SEC filings</strong><span>Comparing the two latest 13F reports for each investor.</span></div>
-    </section>
-
-    <section id="dataNote" class="data-note" aria-live="polite" hidden></section>
-
-    <section class="metrics" id="metrics" hidden></section>
-
-    <nav class="tabs" aria-label="Sections" hidden id="tabs">
-      <button class="tab active" data-tab="feed" type="button">Activity</button>
-      <button class="tab" data-tab="investors" type="button">Investors</button>
-      <button class="tab" data-tab="consensus" type="button">Consensus</button>
-    </nav>
-
-    <section class="toolbar" id="toolbar" hidden>
-      <label class="search-wrap">
-        <span class="sr-only">Search</span>
-        <input id="search" type="search" placeholder="Search investor or company" autocomplete="off" />
-      </label>
-      <label class="following-toggle"><input type="checkbox" id="followingOnly" /> Following only</label>
-    </section>
-
-    <section id="view"></section>
-
-    <footer>
-      <p>Source: SEC EDGAR Form 13F-HR. Filings are delayed quarterly disclosures, not real-time trades. Profiles refer to manager filings, not personal accounts. Reported values are in USD (not live prices or total assets under management). Share changes are not split-adjusted and do not prove purchases or sales. Amended reports are excluded until reconciled.</p>
-    </footer>
-  </main>
-
-  <dialog id="investorDialog">
-    <button class="dialog-close" id="closeDialog" type="button" aria-label="Close">×</button>
-    <div id="dialogContent"></div>
-  </dialog>
-
-  <script src="/app.js" defer></script>
+      <div id="view" aria-busy="true"><div class="loading-state"><span class="loading-line"></span><p>Checking filing availability…</p></div></div>
+      <footer class="research-footer"><span>SEC EDGAR · 13F-HR</span><p>Delayed disclosures, not live positions. USD as filed. Changes are not split-adjusted and do not prove trades. <a href="#sources">Methodology ↗</a></p></footer>
+    </main>
+  </div>
+</div>
+<div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+<noscript><p class="noscript">Enable JavaScript to explore filings. Original reports remain available at SEC EDGAR.</p></noscript>
 </body>
 </html>
